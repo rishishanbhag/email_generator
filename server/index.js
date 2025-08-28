@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import userRoutes from "./routes/user.routes.js";
+import ticketRoutes from "./routes/ticket.routes.js";
 
 
 import dotenv from "dotenv";

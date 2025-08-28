@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
-import User from "../models/User.js"
+import User from "../models/user.models.js"
 import {inngest} from "../inngest/client.js"
 
 export const signup= async(req,res)=>{
@@ -79,6 +79,17 @@ export const updateUser = async (req, res) => {
   }
 };
 
+
+export const getUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+    if (!user) return res.status(404).json({ error: "User not found" });
+    
+    return res.json(user);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to get user", details: error.message });
+  }
+};
 
 export const getUsers = async (req, res) => {
   try {
