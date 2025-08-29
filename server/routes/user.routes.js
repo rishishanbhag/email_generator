@@ -4,7 +4,7 @@ import { authenticate } from "../middleware/auth.js";
 
 const router=express.Router();
 
-router.post("update-user",authenticate,updateUser)
+router.post("/update-user",authenticate,updateUser)
 router.get("/user",authenticate, getUser)
 
 

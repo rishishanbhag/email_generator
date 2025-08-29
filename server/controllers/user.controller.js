@@ -17,7 +17,7 @@ export const signup= async(req,res)=>{
             }
         })
 
-        const token= jwt.sign({id:user._id},{role:user.role},process.env.JWT_SECRET)
+        const token= jwt.sign({id:user._id, role:user.role}, process.env.JWT_SECRET)
         res.status(201).json({user,token})
 
     } catch (error) {
@@ -34,7 +34,7 @@ export const login= async(req,res)=>{
         const isMatch= await bcrypt.compare(password,user.password)
         if(!isMatch) return res.status(401).json({error:"invalid credentials"})
 
-        const token= jwt.sign({id:user._id},{role:user.role},process.env.JWT_SECRET)
+        const token= jwt.sign({id:user._id, role:user.role}, process.env.JWT_SECRET)
         res.status(200).json({user,token})
 
     } catch (error) {
@@ -43,20 +43,15 @@ export const login= async(req,res)=>{
 }
 
 export const logout=async (req,res)=>{
-
-    
-  //     Gets the Authorization header from the request
-  // Splits it by space " " to separate "Bearer" from the actual token
-  // Takes the second part [1] which is the JWT token
-  // Expected format: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-  // Result: token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-
   try {
-    const token = req.headers.authorization.split(" ")[1];  //refer the above
+    const token = req.headers.authorization?.split(" ")[1];
     if (!token) return res.status(401).json({ error: "no token provided" });
-
+    
+    // Since JWT is stateless, we just return success
+    // In production, you might want to blacklist the token
+    res.status(200).json({ message: "Logged out successfully" });
   } catch (error) {
-    res.status(500).json({ detail: error.message, error: "Unauthorized" });
+    res.status(500).json({ detail: error.message, error: "Logout failed" });
   }
 }
 
