@@ -1,9 +1,9 @@
 import { inngest } from "../client.js";
-import Ticket from "../../models/ticket.js";
-import User from "../../models/user.js";
+import Ticket from "../../models/ticket.model.js";
+import User from "../../models/user.models.js";
 import { NonRetriableError } from "inngest";
 import { sendMail } from "../../utils/mailer.js";
-import analyzeTicket from "../../utils/ai.js";
+import analyzeTicket from "../../utils/api.js";
 
 export const onTicketCreated = inngest.createFunction(
   { id: "on-ticket-created", retries: 2 },
@@ -64,7 +64,7 @@ export const onTicketCreated = inngest.createFunction(
         return user;
       });
 
-      await setp.run("send-email-notification", async () => {
+      await step.run("send-email-notification", async () => {
         if (moderator) {
           const finalTicket = await Ticket.findById(ticket._id);
           await sendMail(
